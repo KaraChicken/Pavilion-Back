@@ -48,7 +48,37 @@ const schema = new Schema({
     type: [String]
   },
   cart: {
+    type: [cartSchema]
+  },
+  role: {
     type: Number,
     default: UserRole.USER
   }
+}, {
+  timestemps: true,
+  versionKey: false
 })
+
+schema.virtual('cartQuantity')
+  .get(function () {
+    return this.cart.reduce((total, current) => {
+      return total + current.quantity
+    }, 0)
+  })
+
+schema.pre('save', function (next) {
+  const user = this
+  if (user.isModified('password')) {
+    if (user.password.length < 4 || user.password.length > 20) {
+      const error = new Error.ValidationError(null)
+      error.addError('password', new Error.ValidationError({ message: '密碼長度不符' }))
+      next(error)
+      return
+    } else {
+      user.password = bcrypt.hashSync(user.password, 10)
+    }
+  }
+  next()
+})
+
+export default model('users', schema)
