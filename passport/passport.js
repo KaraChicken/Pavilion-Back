@@ -40,7 +40,7 @@ passport.use('jwt', new passportJWT.Strategy({
     // jwt 過期時間單位是秒，node.js 日期單位是毫秒
     const expired = payload.exp * 1000 < new Date().getTime()
 
-    /* 
+    /*
       http://localhost:4000/users/test?aaa=111&bbb=2
       req.orignalUrl = /users/test?aaa=111&bbb=2
       req.baseUrl = /users
