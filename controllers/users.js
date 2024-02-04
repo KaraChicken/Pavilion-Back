@@ -1,7 +1,7 @@
-import users from '../models/users'
+import users from '../models/users.js'
 import { StatusCodes } from 'http-status-codes'
 import jwt from 'jsonwebtoken'
-import products from '../models/products'
+import products from '../models/products.js'
 import validator from 'validator'
 
 export const create = async (req, res) => {
@@ -15,7 +15,7 @@ export const create = async (req, res) => {
     if (error.name === 'ValidationError') {
       const key = Object.keys(error.errors)[0]
       const message = error.errors[key].message
-      res.ststus(StatusCodes.BAD_REQUEST).json({
+      res.status(StatusCodes.BAD_REQUEST).json({
         success: false,
         message
       })
@@ -35,7 +35,7 @@ export const create = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '1 s' })
+    const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '7 days' })
     req.user.tokens.push(token)
     await req.user.save()
     res.status(StatusCodes.OK).json({
@@ -85,7 +85,7 @@ export const extend = async (req, res) => {
       result: token
     })
   } catch (error) {
-    res.ststus(StatusCodes.INTERNAL_SERVER_ERROR).json({
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: '未知錯誤'
     })
@@ -156,7 +156,7 @@ export const editCart = async (req, res) => {
         message: 'ID 格式錯誤'
       })
     } else if (error.message === 'NOT FOUND') {
-      res.ststus(StatusCodes.NOT_FOUND).json({
+      res.status(StatusCodes.NOT_FOUND).json({
         success: false,
         message: '查無商品'
       })

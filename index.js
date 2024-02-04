@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 import cors from 'cors'
 import routeUsers from './routes/users.js'
 import routeProducts from './routes/products.js'
-import routeOrders from './routers/orders.js'
+import routeOrders from './routes/orders.js'
 import { StatusCodes } from 'http-status-codes'
 import './passport/passport.js'
 
@@ -13,7 +13,7 @@ const app = express()
 app.use(cors({
   // origin = 請求的來源
   // collback(錯誤, 是否允許)
-  orgin (origin, collback) {
+  orign (origin, collback) {
     if (origin === undefined || origin.includes('github.io') || origin.includes('localhost')) {
       collback(null, true)
     } else {
@@ -22,7 +22,7 @@ app.use(cors({
   }
 }))
 app.use((_, req, res, next) => {
-  res.status(StatusCodes.FORBIDDEN).json({
+  res.sendStatus(StatusCodes.FORBIDDEN).json({
     success: false,
     message: '請求被拒絕'
   })
@@ -30,7 +30,7 @@ app.use((_, req, res, next) => {
 
 app.use(express.json())
 app.use((_, req, res, next) => {
-  res.status(StatusCodes.BAD_REQUEST).json({
+  res.sendStatus(StatusCodes.BAD_REQUEST).json({
     success: false,
     message: '資料格式錯誤'
   })
@@ -47,7 +47,7 @@ app.all('*', (req, res) => {
   })
 })
 
-app.listen(process.PORT || 4000, async () => {
+app.listen(process.env.PORT || 4000, async () => {
   console.log('伺服器啟動')
   await mongoose.connect(process.env.DB_URL)
   console.log('資料庫連線成功')

@@ -62,11 +62,11 @@ passport.use('jwt', new passportJWT.Strategy({
     return done(null, { user, token }, null)
   } catch (error) {
     if (error.message === 'EXPIRED') {
-      return (null, null, { message: 'JWT 過期' })
+      return done(null, null, { message: 'JWT 過期' })
     } else if (error.message === 'JWT') {
-      return (null, null, { message: 'JWT 無效' })
+      return done(null, null, { message: 'JWT 無效' })
     } else {
-      return (null, null, { message: '未知錯誤' })
+      return done(null, null, { message: '未知錯誤' })
     }
   }
 }))
