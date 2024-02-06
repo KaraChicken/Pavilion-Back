@@ -42,13 +42,13 @@ passport.use('jwt', new passportJWT.Strategy({
 
     /*
       http://localhost:4000/users/test?aaa=111&bbb=2
-      req.orignalUrl = /users/test?aaa=111&bbb=2
+      req.originalUrl = /users/test?aaa=111&bbb=2
       req.baseUrl = /users
       req.path = /test
       req.query = { aaa: 111, bbb: 222 }
     */
     const url = req.baseUrl + req.path
-    if (expired && url !== '/users/extend' && url !== 'users/logout') {
+    if (expired && url !== '/users/extend' && url !== '/users/logout') {
       throw new Error('EXPIRED')
     }
 
