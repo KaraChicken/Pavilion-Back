@@ -37,7 +37,7 @@ const schema = new Schema({
       validator (value) {
         return validator.isEmail(value)
       },
-      message: '使用者信箱格式錯誤'
+      message: '使用者信箱格式錯誤123'
     }
   },
   password: {

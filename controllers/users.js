@@ -12,13 +12,18 @@ export const create = async (req, res) => {
       message: ''
     })
   } catch (error) {
+    // console.log('error.errors錯誤', error.errors)
+    // console.log('error.name錯誤', error.name)
     if (error.name === 'ValidationError') {
       const key = Object.keys(error.errors)[0]
+      // console.log('key錯誤', key)
       const message = error.errors[key].message
+      // const message = error.errors[key].message
       res.status(StatusCodes.BAD_REQUEST).json({
         success: false,
         message
       })
+      // console.log('error.errors[key]錯誤', error.errors[key])
     } else if (error.name === 'MongoServerError' && error.code === 11000) {
       res.status(StatusCodes.CONFLICT).json({
         success: false,
