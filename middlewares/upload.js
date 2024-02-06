@@ -6,7 +6,7 @@ import { StatusCodes } from 'http-status-codes'
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_KEY,
-  api_secret: process.env.CLOUDINATY_SECRET
+  api_secret: process.env.CLOUDINARY_SECRET
 })
 
 const upload = multer({
@@ -32,7 +32,7 @@ export default (req, res, next) => {
       } else if (error.code === 'LIMIT_FILE_FORMAT') {
         message = '檔案格式錯誤'
       }
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      res.status(StatusCodes.BAD_REQUEST).json({
         success: false,
         message
       })

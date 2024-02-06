@@ -15,7 +15,7 @@ export const create = async (req, res) => {
     if (error.name === 'ValidationError') {
       const key = Object.keys(error.errors)[0]
       const message = error.errors[key].message
-      res.status(StatusCodes.INTERNAL_SERCER_ERROR).json({
+      res.status(StatusCodes.BAD_REQUEST).json({
         success: false,
         message
       })
@@ -30,8 +30,8 @@ export const create = async (req, res) => {
 
 export const getAll = async (req, res) => {
   try {
-    const sorBy = req.query.sortBy || 'createdAt'
-    const sorOrder = parseInt(req.query.sortOrder) || -1
+    const sortBy = req.query.sortBy || 'createdAt'
+    const sortOrder = parseInt(req.query.sortOrder) || -1
     const itemsPerPage = parseInt(req.query.itemsPerPage) || 20
     const page = parseInt(req.query.page) || 1
     const regex = new RegExp(req.query.search || '', 'i')
@@ -46,8 +46,8 @@ export const getAll = async (req, res) => {
       // const text = 'a'
       // const obj = { [text]: 1 }
       // obj.a = 1
-      .sort({ [sorBy]: sorOrder })
-      // 如果第一頁 10 筆
+      .sort({ [sortBy]: sortOrder })
+      // 如果一頁 10 筆
       // 第 1 頁 = 0 ~ 10 = 跳過 0 筆 = (1 - 1) * 10
       // 第 2 頁 = 11 ~ 20 = 跳過 10 筆 = (2 - 1) * 10
       // 第 3 頁 = 21 ~ 30 = 跳過 20 筆 = (3 - 1) * 10
@@ -74,8 +74,8 @@ export const getAll = async (req, res) => {
 
 export const get = async (req, res) => {
   try {
-    const sorBy = req.query.sortBy || 'createdAt'
-    const sorOrder = parseInt(req.query.sortOrder) || -1
+    const sortBy = req.query.sortBy || 'createdAt'
+    const sortOrder = parseInt(req.query.sortOrder) || -1
     const itemsPerPage = parseInt(req.query.itemsPerPage) || 20
     const page = parseInt(req.query.page) || 1
     const regex = new RegExp(req.query.search || '', 'i')
@@ -91,8 +91,8 @@ export const get = async (req, res) => {
       // const text = 'a'
       // const obj = { [text]: 1 }
       // obj.a = 1
-      .sort({ [sorBy]: sorOrder })
-      // 如果第一頁 10 筆
+      .sort({ [sortBy]: sortOrder })
+      // 如果一頁 10 筆
       // 第 1 頁 = 0 ~ 10 = 跳過 0 筆 = (1 - 1) * 10
       // 第 2 頁 = 11 ~ 20 = 跳過 10 筆 = (2 - 1) * 10
       // 第 3 頁 = 21 ~ 30 = 跳過 20 筆 = (3 - 1) * 10
@@ -121,7 +121,7 @@ export const getId = async (req, res) => {
   try {
     if (!validator.isMongoId(req.params.id)) throw new Error('ID')
 
-    const result = await products.findById(req.parms.id)
+    const result = await products.findById(req.params.id)
 
     if (!result) throw new Error('NOT FOUND')
 
@@ -155,7 +155,7 @@ export const edit = async (req, res) => {
     if (!validator.isMongoId(req.params.id)) throw new Error('ID')
 
     req.body.image = req.file?.path
-    await products.findByIdAndUpdate(req.paramsid, req.body, { runValidators: true }).orFail(new Error('NOT FOUND'))
+    await products.findByIdAndUpdate(req.params.id, req.body, { runValidators: true }).orFail(new Error('NOT FOUND'))
 
     res.status(StatusCodes.OK).json({
       success: true,
@@ -172,7 +172,7 @@ export const edit = async (req, res) => {
         success: false,
         message: '查無商品'
       })
-    } else if (error.message === 'ValidationError') {
+    } else if (error.name === 'ValidationError') {
       const key = Object.keys(error.errors)[0]
       const message = error.errors[key].message
       res.status(StatusCodes.BAD_REQUEST).json({

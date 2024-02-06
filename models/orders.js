@@ -4,7 +4,7 @@ const cartSchema = new Schema({
   product: {
     type: ObjectId,
     ref: 'products',
-    required: [true, '缺少商品數量']
+    required: [true, '缺少商品欄位']
   },
   quantity: {
     type: Number,

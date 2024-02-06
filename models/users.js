@@ -19,7 +19,7 @@ const schema = new Schema({
   account: {
     type: String,
     required: [true, '缺少使用者帳號'],
-    mainlength: [4, '使用者帳號長度不符'],
+    minlength: [4, '使用者帳號長度不符'],
     maxlength: [20, '使用者帳號長度不符'],
     unique: true,
     validate: {
@@ -55,7 +55,7 @@ const schema = new Schema({
     default: UserRole.USER
   }
 }, {
-  timestemps: true,
+  timestamps: true,
   versionKey: false
 })
 
@@ -71,7 +71,7 @@ schema.pre('save', function (next) {
   if (user.isModified('password')) {
     if (user.password.length < 4 || user.password.length > 20) {
       const error = new Error.ValidationError(null)
-      error.addError('password', new Error.ValidationError({ message: '密碼長度不符' }))
+      error.addError('password', new Error.ValidatorError({ message: '密碼長度不符' }))
       next(error)
       return
     } else {

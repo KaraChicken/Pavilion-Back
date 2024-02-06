@@ -60,7 +60,7 @@ export const login = async (req, res) => {
 export const logout = async (req, res) => {
   try {
     req.tokens = req.user.tokens.filter(token => token !== req.token)
-    await req.user.tokens.save()
+    await req.user.save()
     res.status(StatusCodes.OK).json({
       success: true,
       message: ''
@@ -94,7 +94,7 @@ export const extend = async (req, res) => {
 
 export const getProfile = (req, res) => {
   try {
-    res.status(StatusCodes.Ok).json({
+    res.status(StatusCodes.OK).json({
       success: true,
       message: '',
       result: {
@@ -120,7 +120,7 @@ export const editCart = async (req, res) => {
     // 尋找購物車內有沒有傳入的商品 ID
     const idx = req.user.cart.findIndex(item => item.product.toString() === req.body.product)
     if (idx > -1) {
-      // 修改購物車已有的商品數量
+      // 修改購物車內已有的商品數量
       const quantity = req.user.cart[idx].quantity + parseInt(req.body.quantity)
       // 檢查數量
       // 小於 0 移除

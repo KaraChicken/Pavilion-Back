@@ -6,30 +6,28 @@ const schema = new Schema({
     required: [true, '缺少商品名稱']
   },
   price: {
-    type: {
-      type: Number,
-      required: [true, '缺少商品價格']
-    },
-    image: {
-      type: String,
-      required: [true, '缺少商品圖片']
-    },
-    description: {
-      type: String,
-      required: [true, '缺少商品說明']
-    },
-    category: {
-      type: String,
-      required: [true, '缺少商品分類'],
-      enum: {
-        values: ['炸物', '飲料', '啤酒'],
-        message: '商品分類錯誤'
-      }
-    },
-    sell: {
-      type: Boolean,
-      required: [true, '缺少商品上架狀態']
+    type: Number,
+    required: [true, '缺少商品價格']
+  },
+  image: {
+    type: String,
+    required: [true, '缺少商品圖片']
+  },
+  description: {
+    type: String,
+    required: [true, '缺少商品說明']
+  },
+  category: {
+    type: String,
+    required: [true, '缺少商品分類'],
+    enum: {
+      values: ['炸物', '飲料', '啤酒'],
+      message: '商品分類錯誤'
     }
+  },
+  sell: {
+    type: Boolean,
+    required: [true, '缺少商品上架狀態']
   }
 }, {
   timestamps: true,
