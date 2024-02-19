@@ -4,6 +4,8 @@ import validator from 'validator'
 
 export const create = async (req, res) => {
   try {
+    // console.log(req.body) // 成功，前端有傳資料過來
+    // console.log(req.file)
     req.body.image = req.file.path
     const result = await products.create(req.body)
     res.status(StatusCodes.OK).json({
