@@ -4,6 +4,7 @@ import validator from 'validator'
 
 export const create = async (req, res) => {
   try {
+    console.log(req.body)
     const result = await news.create(req.body)
     res.status(StatusCodes.OK).json({
       success: true,
