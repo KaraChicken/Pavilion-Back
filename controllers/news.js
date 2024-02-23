@@ -7,7 +7,7 @@ export const create = async (req, res) => {
     const result = await news.create(req.body)
     res.status(StatusCodes.OK).json({
       success: true,
-      messsage: '',
+      message: '',
       result
     })
   } catch (error) {
@@ -29,7 +29,7 @@ export const create = async (req, res) => {
 
 export const getAll = async (req, res) => {
   try {
-    const sortBy = req.query.sorBy || 'createdAt'
+    const sortBy = req.query.sortBy || 'createdAt'
     const sortOrder = parseInt(req.query.sortOrder) || -1
     const itemsPerPage = parseInt(req.query.itemsPerPage) || 20
     const page = parseInt(req.query.page) || 1
@@ -38,8 +38,9 @@ export const getAll = async (req, res) => {
     const data = await news
       .find({
         $or: [
-          { name: regex },
-          { description: regex }
+          { group: regex },
+          { title: regex },
+          { content: regex }
         ]
       })
       // const text = 'a'
@@ -72,7 +73,7 @@ export const getAll = async (req, res) => {
 
 export const get = async (req, res) => {
   try {
-    const sortBy = req.query.sorBy || 'createdAt'
+    const sortBy = req.query.sortBy || 'createdAt'
     const sortOrder = parseInt(req.query.sortOrder) || -1
     const itemsPerPage = parseInt(req.query.itemsPerPage) || 20
     const page = parseInt(req.query.page) || 1
@@ -82,8 +83,9 @@ export const get = async (req, res) => {
       .find({
         poText: true,
         $or: [
-          { name: regex },
-          { description: regex }
+          { group: regex },
+          { title: regex },
+          { content: regex }
         ]
       })
       // const text = 'a'
@@ -149,9 +151,9 @@ export const getId = async (req, res) => {
 
 export const edit = async (req, res) => {
   try {
-    if (!validator.isMongoId(req.params.id)) throw Error('ID')
+    if (!validator.isMongoId(req.params.id)) throw new Error('ID')
 
-    await news.findByIdAndUpdate(req.params.id, req.body, { runValidators: true }).orFail(new Error('NOT FOUND'))
+    await news.findByIdAndUpdate(req.params.id, req.body, { runValidators: true }).orFail(() => new Error('NOT FOUND'))
 
     res.status(StatusCodes.OK).json({
       success: true,
