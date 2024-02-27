@@ -36,7 +36,7 @@ export const getAll = async (req, res) => {
     const page = parseInt(req.query.page) || 1
     const regex = new RegExp(req.query.search || '', 'i')
 
-    const data = await news
+    const result = await news
       .find({
         $or: [
           { group: regex },
@@ -59,9 +59,8 @@ export const getAll = async (req, res) => {
     res.status(StatusCodes.OK).json({
       success: true,
       message: '',
-      result: {
-        data, total
-      }
+      result,
+      total
     })
   } catch (error) {
     console.log(error)
@@ -80,7 +79,7 @@ export const get = async (req, res) => {
     const page = parseInt(req.query.page) || 1
     const regex = new RegExp(req.query.search || '', 'i')
 
-    const data = await news
+    const result = await news
       .find({
         poText: true,
         $or: [
@@ -104,9 +103,8 @@ export const get = async (req, res) => {
     res.status(StatusCodes.OK).json({
       success: true,
       message: '',
-      result: {
-        data, total
-      }
+      result,
+      total
     })
   } catch (error) {
     console.log(error)
